@@ -1,64 +1,38 @@
 #include <Arduino.h>
 #include <SoftwareSerial.h>
+#include "config.h"
 
-/*
-* Example with serial output for debugging
-* Connect Arduino Pins 1 and 2 to USB-Serial-Converter
-*/
 
-SoftwareSerial Serial(1, 2);
+SoftwareSerial Serial(RX_PIN, TX_PIN);
 
-//ir-led of proximity sensor (invisible)
-#define irled 9
-// power in for diode in proximity sensor
-#define irdiode 8
-//adc pin (connect to output of sensor)
-#define irsens 7
-
-// a simple status LED
-#define statusled 5
-
-// define a threshold for your mailbox.
-#define THRESHOLD 15
-
-bool checkLetter();
+int measure();
 
 void setup()
 {
-  pinMode(irled, OUTPUT);
-  pinMode(irdiode, OUTPUT);
-  pinMode(statusled, OUTPUT);
+  pinMode(IRLED_PIN, OUTPUT);
+  pinMode(IRDIODE_PIN, OUTPUT);
   Serial.begin(9600);
   Serial.println("Connection ready...");
 }
 
 void loop()
 {
-  if(checkLetter() == true ){
-    digitalWrite(statusled, HIGH);
-    Serial.println("1");
-  }else{
-    digitalWrite(statusled, LOW);
-    Serial.println("0");
-  }
-  delay(100);
+  Serial.println(measure)
 }
 
-bool checkLetter(){
-  digitalWrite(irled,HIGH);
-  digitalWrite(irdiode,HIGH);
-  unsigned int measure = 0;
-  for(int i = 0 ; i <3 ; i++){
-    delay(5);
-    measure += analogRead(irsens);
-  }
-  measure = measure/3;
-  digitalWrite(irled,LOW);
-  digitalWrite(irdiode,LOW);
 
-  if(measure > THRESHOLD){
-    return true;
-  }else{
-    return false;
-  }
+// Get value from ir sensor
+int measure()
+{
+  digitalWrite(IRLED_PIN, HIGH);
+  digitalWrite(IRDIODE_PIN, HIGH);
+  delay(10);
+
+  int measure = analogRead(IRSENS_PIN);
+
+  digitalWrite(IRDIODE_PIN, LOW);
+  digitalWrite(IRLED_PIN, LOW);
+  delay(10);
+
+  return measure;
 }
