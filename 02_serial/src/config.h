@@ -7,5 +7,5 @@
 #define IRLED_PIN 3
 #define IRDIODE_PIN 8
 #define IRSENS_PIN A3
-#define RX_PIN 1
-#define TX_PIN 2
+#define RX_PIN 0
+#define TX_PIN 1
